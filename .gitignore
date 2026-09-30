@@ -1,0 +1,34 @@
+# CubeMX临时文件
+.mxproject
+
+# Keil MDK输出&临时文件
+# Keil MDK 编译产物，包含子目录
+MDK-ARM/**/*.axf
+MDK-ARM/**/*.hex
+MDK-ARM/**/*.bin
+MDK-ARM/**/*.elf
+MDK-ARM/**/*.o
+MDK-ARM/**/*.d
+MDK-ARM/**/*.crf
+MDK-ARM/**/*.dep
+MDK-ARM/**/*.lst
+MDK-ARM/**/*.map
+MDK-ARM/**/*.scvd
+MDK-ARM/**/*.uvguix.*
+MDK-ARM/**/Logs/
+MDK-ARM/**/RTE/
+MDK-ARM/LCD_LVGL/
+
+# ST官方库
+Drivers/
+
+# LVGL官方中间件（如果没有修改原版LVGL就开启下面一行）
+# Middlewares/
+
+# VSCode配置（单人开发直接忽略）
+.vscode/
+
+# 其他临时文件
+*.tmp
+*.bak
+*.log
