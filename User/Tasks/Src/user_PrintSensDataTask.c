@@ -7,10 +7,14 @@ void user_PrintSensDataTask(void *argument)
     for (;;)
     {
         print_count++;
-        if (!HWInterface.AHT20.ConnectionError && print_count == 1)
+        if (!HWInterface.GY39.ConnectionError && print_count == 1)
         {
-            printf("AHT20Task Temp = %.2f, Humidity = %.2f\n",
-                    HWInterface.AHT20.data.temperature, HWInterface.AHT20.data.humidity);
+            printf("GY39Task Temp = %.2f℃, Humidity = %.2f%%, Pressure = %.2fPa, Altitude = %dm, Lux = %.2flux\n",
+                    HWInterface.GY39.data.temp, 
+                    HWInterface.GY39.data.hum, 
+                    HWInterface.GY39.data.press, 
+                    HWInterface.GY39.data.alt, 
+                    HWInterface.GY39.data.lux);
         }
         else if (!HWInterface.IMU.ConnectionError && print_count == 2)
         {

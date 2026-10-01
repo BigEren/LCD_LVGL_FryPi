@@ -430,6 +430,12 @@ HW_Interface_t HWInterface = {
         .Start = HW_MAX30102_Start,
         .Sleep = HW_MAX30102_Sleep
     },
+    .GY39 = {
+        .ConnectionError = true,
+        .data = {0},
+        .Init = HW_GY39_Init,
+        .GetData = HW_GY39_GetData
+    },
     .Ecompass = {
         .ConnectionError = true,
         .direction = 45,

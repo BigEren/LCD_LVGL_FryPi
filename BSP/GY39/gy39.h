@@ -9,7 +9,6 @@
 /*==================== GY39地址 ====================*/
 
 #define GY39_ADDR                 0x5B
-#define GY39_DEVICE_ID_REG        0x55
 
 
 /*==================== 数据结构 ===================*/
@@ -36,7 +35,6 @@ typedef struct
 /*==================== BSP函数接口 ====================*/
 
 bool GY39_Init(void);
-bool GY39_ReadID(uint8_t *id);
 bool GY39_ReadData(GY39_Data_t *data);
 
 

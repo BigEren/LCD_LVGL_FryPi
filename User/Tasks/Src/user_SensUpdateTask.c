@@ -111,3 +111,18 @@ void EcompassDataUpdateTask(void *argument)
     }
 }
 
+void GY39DataUpdateTask(void *argument)
+{
+    for (;;)
+    {
+        if (false == HWInterface.GY39.ConnectionError)
+        {
+            if (false == HWInterface.GY39.GetData())
+            {
+                printf("GY39DataUpdateTask: GetData failed\n");
+            }
+        }
+        osDelay(1000);
+    }
+}
+

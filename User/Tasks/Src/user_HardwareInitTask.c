@@ -130,11 +130,11 @@ void user_HardwareInitTask(void *argument)
 
         // sensor init
         uint8_t num = 3;
-        while (num && HWInterface.AHT20.ConnectionError == true)
-        {
-            num--;
-            HWInterface.AHT20.ConnectionError = !HWInterface.AHT20.Init();
-        }
+        // while (num && HWInterface.AHT20.ConnectionError == true)
+        // {
+        //     num--;
+        //     HWInterface.AHT20.ConnectionError = !HWInterface.AHT20.Init();
+        // }
 
         num = 3;
         while (num && HWInterface.IMU.ConnectionError == true)
@@ -154,15 +154,22 @@ void user_HardwareInitTask(void *argument)
             HWInterface.MAX30102.Sleep();
         }
 
+        // num = 3;
+        // while (num && HWInterface.Ecompass.ConnectionError == true)
+        // {
+        //     num--;
+        //     HWInterface.Ecompass.ConnectionError = !HWInterface.Ecompass.Init();
+        // }
+        // if (!HWInterface.Ecompass.ConnectionError)
+        // {
+        //     HWInterface.Ecompass.Sleep();
+        // }
+
         num = 3;
-        while (num && HWInterface.Ecompass.ConnectionError == true)
+        while (num && HWInterface.GY39.ConnectionError == true)
         {
             num--;
-            HWInterface.Ecompass.ConnectionError = !HWInterface.Ecompass.Init();
-        }
-        if (!HWInterface.Ecompass.ConnectionError)
-        {
-            HWInterface.Ecompass.Sleep();
+            HWInterface.GY39.ConnectionError = !HWInterface.GY39.Init();
         }
 
         vTaskDelete(NULL);

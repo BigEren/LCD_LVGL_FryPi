@@ -148,6 +148,13 @@ const osThreadAttr_t EcompassDataUpdateTask_attributes = {
     .priority = (osPriority_t)osPriorityLow1,
 };
 
+// GY39DataUpdateTask Init  
+osThreadId_t GY39DataUpdateTaskHandle = NULL;
+const osThreadAttr_t GY39DataUpdateTask_attributes = {
+    .name = "GY39DataUpdateTask",
+    .stack_size = 128 * 10,
+    .priority = (osPriority_t)osPriorityLow1,
+};
 
 
 /* Message queues ------------------------------------------------------------*/
@@ -177,12 +184,13 @@ void user_Tasks_Init(void)
     user_LVGLTaskHandle = osThreadNew(user_LVGLTask, NULL, &user_LVGLTask_attributes);
     StepsDataUpdateTaskHandle = osThreadNew(StepsDataUpdateTask, NULL, &StepsDataUpdateTask_attributes);
     HealthDataUpdateTaskHandle = osThreadNew(HealthDataUpdateTask, NULL, &HealthDataUpdateTask_attributes);
-    AHT20DataUpdateTaskHandle = osThreadNew(AHT20DataUpdateTask, NULL, &AHT20DataUpdateTask_attributes);
+    // AHT20DataUpdateTaskHandle = osThreadNew(AHT20DataUpdateTask, NULL, &AHT20DataUpdateTask_attributes);
     MPUCheckTaskHandle = osThreadNew(MPUCheckTask, NULL, &MPUCheckTask_attributes);
     StopEnterTaskHandle = osThreadNew(StopEnterTask, NULL, &StopEnterTask_attributes);
     IdleEnterTaskHandle = osThreadNew(IdleEnterTask, NULL, &IdleEnterTask_attributes);
     PrintSensDataTaskHandle = osThreadNew(user_PrintSensDataTask, NULL, &PrintSensDataTask_attributes);
-    EcompassDataUpdateTaskHandle = osThreadNew(EcompassDataUpdateTask, NULL, &EcompassDataUpdateTask_attributes);
+    EcompassDataUpdateTaskHandle = osThreadNew(EcompassDataUpdateTask, NULL, &EcompassDataUpdateTask_attributes);   
+    GY39DataUpdateTaskHandle = osThreadNew(GY39DataUpdateTask, NULL, &GY39DataUpdateTask_attributes);
 
     /* add events, ... */
 

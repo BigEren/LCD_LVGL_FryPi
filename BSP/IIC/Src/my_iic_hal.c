@@ -4,8 +4,8 @@
 #define IIC_DELAY_US_FAST1    1
 #define IIC_DELAY_US_FAST2    2
 
-#define IIC_DELAY_US_SLOW1    4
-#define IIC_DELAY_US_SLOW2    7
+#define IIC_DELAY_US_SLOW1    15
+#define IIC_DELAY_US_SLOW2    20
 
 
 
@@ -511,15 +511,15 @@ void IICInit(iic_bus_my_t *bus, uint8_t clk_enable)
     // SDA
     GPIO_InitStruct.Pin = bus->IIC_SDA_PIN;
     GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_OD;
-    GPIO_InitStruct.Pull = GPIO_NOPULL;
-    GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_HIGH;
+    GPIO_InitStruct.Pull = GPIO_PULLUP;
+    GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_MEDIUM;
     HAL_GPIO_Init(bus->IIC_SDA_PORT, &GPIO_InitStruct);
 
     // SCL
     GPIO_InitStruct.Pin = bus->IIC_SCL_PIN;
     GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_OD;
-    GPIO_InitStruct.Pull = GPIO_NOPULL;
-    GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_HIGH;
+    GPIO_InitStruct.Pull = GPIO_PULLUP;
+    GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_MEDIUM;
     HAL_GPIO_Init(bus->IIC_SCL_PORT, &GPIO_InitStruct);
 
     // 初始化总线

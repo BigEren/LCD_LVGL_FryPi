@@ -1,6 +1,5 @@
 #include "gy39.h"
 #include "my_iic_hal.h"
-#include "i2c.h"
 
 static iic_bus_my_t *GY39_bus = &SensorBus;
 
@@ -11,69 +10,35 @@ static bool GY39_ReadRegs(uint8_t reg,
                           uint8_t *data,
                           uint8_t len)
 {
-    // return IIC_Read_Multi_Byte(
-    //     GY39_bus,
-    //     GY39_ADDR,
-    //     reg,
-    //     len,
-    //     data) == SUCCESS;
-    HAL_StatusTypeDef ret = HAL_I2C_Mem_Read(
-        &hi2c3,
-        GY39_ADDR << 1,
+    return IIC_Read_Multi_Byte(
+        GY39_bus,
+        GY39_ADDR,
         reg,
-        I2C_MEMADD_SIZE_8BIT,
-        data,
         len,
-        1000);
-    return ret == HAL_OK;
-}
-
-bool GY39_ReadID(uint8_t *id)
-{
-    if (id == NULL)
-    {
-        return false;
-    }
-
-    // return IIC_Read_One_Byte(
-    //     GY39_bus,
-    //     GY39_ADDR,
-    //     GY39_DEVICE_ID_REG,
-    //     id
-    // ) == SUCCESS;
-    // HAL_I2C_Mem_Read(
+        data) == SUCCESS;
+    // HAL_StatusTypeDef ret = HAL_I2C_Mem_Read(
     //     &hi2c3,
     //     GY39_ADDR << 1,
-    //     GY39_DEVICE_ID_REG,
+    //     reg,
     //     I2C_MEMADD_SIZE_8BIT,
-    //     id,
-    //     1,
+    //     data,
+    //     len,
     //     1000);
-    return true;
+    // return ret == HAL_OK;
 }
 
 /**
  * @brief 初始化 GY39
- *
- * GY39 本身不需要像 MPU6050 那样写初始化寄存器。
- * 这里只保留统一的设备初始化接口。
+ * @note  GY39 没有 WHO_AM_I，直接读一次数据判断 IIC 是否正常
  */
 bool GY39_Init(void)
 {
-    uint8_t id = 0;
-
-
-    // if (!GY39_ReadID(&id))
-    // {
-    //     printf("GY39_ReadID failed %d \n", id);
-    //     return false;
-    // }
-    // if (id != GY39_DEVICE_ID_REG)
-    // {
-    //     printf("ID not match %d & %d\n", id, GY39_DEVICE_ID_REG);
-    //     return false;
-    // }
-
+    GY39_Data_t data;
+    if (!GY39_ReadData(&data))
+    {
+        printf("GY39 init failed: IIC no response\n");
+        return false;
+    }
     return true;
 }
 
@@ -111,9 +76,8 @@ bool GY39_ReadData(GY39_Data_t *data)
     data->lux = (float)lux_raw / 100.0f;
 
     /*================ 温度 =================*/
-    uint16_t temp_raw = 
-            ((uint16_t)buf[4] << 8) |
-            ((uint16_t)buf[5]);
+    int16_t temp_raw = (int16_t)(((uint16_t)buf[4] << 8) | buf[5]);
+    data->temp = (float)temp_raw / 100.0f;
     
     /*
      * 手册：
@@ -146,10 +110,13 @@ bool GY39_ReadData(GY39_Data_t *data)
     data->hum = (float)hum_raw / 100.0f;
 
     /*================ 海拔 =================*/
-    data->alt = 
-            ((int16_t)buf[12] << 8) |
-            ((int16_t)buf[13]);
+    int16_t alt_raw = (int16_t)(((uint16_t)buf[12] << 8) | buf[13]);
+    data->alt = alt_raw;
 
+    // 在解析前添加
+printf("[GY39 RAW] %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X\r\n",
+       buf[0], buf[1], buf[2], buf[3], buf[4], buf[5], buf[6], buf[7],
+       buf[8], buf[9], buf[10], buf[11], buf[12], buf[13]);
 
     return true;
 }
