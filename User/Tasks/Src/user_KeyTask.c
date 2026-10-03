@@ -28,6 +28,6 @@ void KeyTask(void* argument)
             default:
                 break;
         }
-        osDelay(1);
+        osDelay(8);
     }
 }

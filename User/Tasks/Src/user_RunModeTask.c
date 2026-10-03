@@ -69,6 +69,8 @@ void StopEnterTask(void *argument)
             /*************************** 系统进入睡眠模式前处理 ***************************/
             sleep:
             IdleTimeCount = 0;
+            key_wakeup_flag = 0;
+            system_in_sleep  = 1;
 
             /* 睡眠前处理 */
             printf("Enter Sleep\r\n");
@@ -86,11 +88,7 @@ void StopEnterTask(void *argument)
             /***********************************************************************************/
 
 			/********************************** 系统睡眠处理 ************************************/
-
-            printf("A\r\n");                          // 测试1
             vTaskSuspendAll();
-            printf("B\r\n");                          // 测试2
-            HAL_GPIO_WritePin(LED_T_GPIO_Port, LED_T_Pin, GPIO_PIN_SET);   // 测试3
             CLEAR_BIT(SysTick->CTRL, SysTick_CTRL_ENABLE_Msk);
             HAL_PWR_EnterSTOPMode(PWR_MAINREGULATOR_ON, PWR_STOPENTRY_WFI);
             //systick int
@@ -106,6 +104,7 @@ void StopEnterTask(void *argument)
 			SET_BIT(SysTick->CTRL, SysTick_CTRL_TICKINT_Msk);
             HAL_SYSTICK_Config(SystemCoreClock / (1000U / uwTickFreq));
             SystemClock_Config();
+            system_in_sleep = 0;
             xTaskResumeAll();
 
             /***********************************************************************************/
@@ -130,9 +129,15 @@ void StopEnterTask(void *argument)
                 }
             }
 
-            if (!KEY1 || Wrist_Flag)
+            if (key_wakeup_flag)
             {
-                Wrist_Flag = 0;     // 恢复
+                key_wakeup_flag = 0;    // 清除唤醒标志
+                Wrist_Flag = 0;         // 恢复
+                key_ignore_next = 1;    // 忽略一次按键，防止重复触发
+            }
+            else if (Wrist_Flag)
+            {
+                Wrist_Flag = 0;
             }
             else
             {

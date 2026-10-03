@@ -39,6 +39,7 @@ uint8_t KeyScan(uint8_t mode)
 	return keyvalue;
 }
 
+volatile uint8_t key_ignore_next = 0;   // 唤醒后忽略一次按键
 /**
  * @brief  我的按键扫描
  * @return 0:无动作, 1:短按, 2:长按
@@ -49,6 +50,16 @@ KeyValue_t Key_GetValue(void)
 	static KeyState_t key_state = KEY_IDLE;
 	static uint32_t tick = 0;
 	KeyValue_t key_value = KEY_NONE;
+
+	if (key_ignore_next)
+	{
+		if (KEY1)
+		{
+			key_ignore_next = 0;
+			key_state = KEY_IDLE;
+		}
+		return KEY_NONE;
+	}
 
 	switch (key_state)
 	{
@@ -115,5 +126,19 @@ KeyValue_t Key_GetValue(void)
 	}
 
 	return key_value;
+}
+
+volatile uint8_t key_wakeup_flag = 0;
+volatile uint8_t system_in_sleep = 0;   // 0=正常运行，1=睡眠中
+
+void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
+{
+    if (GPIO_Pin == KEY1_PIN)
+    {
+		if (system_in_sleep)
+		{
+			key_wakeup_flag = 1;
+		}
+    }
 }
 

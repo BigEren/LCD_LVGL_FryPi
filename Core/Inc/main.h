@@ -61,6 +61,9 @@ void Error_Handler(void);
 #define LED_T_GPIO_Port GPIOC
 #define W25Q_CS_Pin GPIO_PIN_0
 #define W25Q_CS_GPIO_Port GPIOC
+#define ON_OFF_Pin GPIO_PIN_0
+#define ON_OFF_GPIO_Port GPIOA
+#define ON_OFF_EXTI_IRQn EXTI0_IRQn
 
 /* USER CODE BEGIN Private defines */
 

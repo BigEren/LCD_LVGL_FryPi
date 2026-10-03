@@ -123,7 +123,7 @@ osThreadId_t StopEnterTaskHandle = NULL;
 const osThreadAttr_t StopEnterTask_attributes = {
     .name = "StopEnterTask",
     .stack_size = 128 * 16,
-    .priority = (osPriority_t)osPriorityLow1,
+    .priority = (osPriority_t)osPriorityLow3,
 };
 
 // PrintSensDataTask Init
@@ -138,7 +138,7 @@ const osThreadAttr_t PrintSensDataTask_attributes = {
 osThreadId_t IdleEnterTaskHandle = NULL;
 const osThreadAttr_t IdleEnterTask_attributes = {
     .name = "IdleEnterTask",
-    .stack_size = 128 * 1,
+    .stack_size = 128 * 3,
     .priority = (osPriority_t)osPriorityLow1,
 };
 
@@ -162,7 +162,7 @@ const osThreadAttr_t GY39DataUpdateTask_attributes = {
 osThreadId_t KeyTaskHandle = NULL;
 const osThreadAttr_t KeyTask_attributes = {
     .name = "KeyTask",
-    .stack_size = 128 * 1,
+    .stack_size = 128 * 3,
     .priority = (osPriority_t)osPriorityLow1,
 };
 

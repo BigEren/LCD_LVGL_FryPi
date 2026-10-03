@@ -43,6 +43,9 @@ void Key_Interrupt_Callback(void);
 uint8_t KeyScan(uint8_t mode);
 KeyValue_t Key_GetValue(void);
 
+extern volatile uint8_t key_ignore_next;   // 唤醒后忽略一次按键
+extern volatile uint8_t key_wakeup_flag;     // 唤醒标志
+extern volatile uint8_t system_in_sleep;   // 0=正常运行，1=睡眠中
 
 
 #ifdef __cplusplus
