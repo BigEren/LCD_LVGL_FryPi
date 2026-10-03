@@ -29,7 +29,7 @@ void MPUCheckTask(void *argument)
                 HWInterface.IMU.wrist_state = WRIST_DOWN;
             }
         }
-        osDelay(300);
+        osDelay(50);
     }
 }
 
@@ -73,10 +73,7 @@ void StepsDataUpdateTask(void *argument)
     {
         if (false == HWInterface.IMU.ConnectionError)
         {
-            if (false == HWInterface.IMU.GetSteps())
-            {
-                printf("StepsDataUpdateTask: GetSteps failed\n");
-            }
+           HWInterface.IMU.GetSteps();
         }
         osDelay(500);
     }

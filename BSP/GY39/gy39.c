@@ -112,11 +112,5 @@ bool GY39_ReadData(GY39_Data_t *data)
     /*================ 海拔 =================*/
     int16_t alt_raw = (int16_t)(((uint16_t)buf[12] << 8) | buf[13]);
     data->alt = alt_raw;
-
-    // 在解析前添加
-printf("[GY39 RAW] %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X\r\n",
-       buf[0], buf[1], buf[2], buf[3], buf[4], buf[5], buf[6], buf[7],
-       buf[8], buf[9], buf[10], buf[11], buf[12], buf[13]);
-
     return true;
 }

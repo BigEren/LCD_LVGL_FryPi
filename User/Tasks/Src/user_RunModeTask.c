@@ -87,7 +87,12 @@ void StopEnterTask(void *argument)
 
 			/********************************** 系统睡眠处理 ************************************/
 
+            printf("A\r\n");                          // 测试1
             vTaskSuspendAll();
+            printf("B\r\n");                          // 测试2
+            HAL_GPIO_WritePin(LED_T_GPIO_Port, LED_T_Pin, GPIO_PIN_SET);   // 测试3
+            CLEAR_BIT(SysTick->CTRL, SysTick_CTRL_ENABLE_Msk);
+            HAL_PWR_EnterSTOPMode(PWR_MAINREGULATOR_ON, PWR_STOPENTRY_WFI);
             //systick int
             CLEAR_BIT(SysTick->CTRL, SysTick_CTRL_ENABLE_Msk);
             //enter stop mode

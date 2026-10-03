@@ -36,7 +36,7 @@ extern "C" {
     #define HW_USE_LCD 1
     #define HW_USE_AHT20 1
     #define HW_USE_MAX30102 1
-    #define HW_USE_IMU 0
+    #define HW_USE_IMU 1
     #define HW_USE_GY39 1
     #define HW_USE_Ecompass  1
 

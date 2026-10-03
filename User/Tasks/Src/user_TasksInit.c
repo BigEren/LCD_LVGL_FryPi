@@ -19,6 +19,8 @@
 #include "user_MessageQueue.h"
 #include "user_PrintSensDataTask.h"
 #include "user_RunModeTask.h"
+#include "user_ScrRenewTask.h"
+#include "user_KeyTask.h"
 
 
 
@@ -88,23 +90,23 @@ const osThreadAttr_t user_LVGLTask_attributes = {
 osThreadId_t MPUCheckTaskHandle = NULL;
 const osThreadAttr_t MPUCheckTask_attributes = {
     .name = "MPUCheckTask",
-    .stack_size = 128 * 10,
+    .stack_size = 128 * 3,
     .priority = (osPriority_t)osPriorityLow1,
 };
 
 // AHT20DataUpdateTask Init
-osThreadId_t AHT20DataUpdateTaskHandle = NULL;
-const osThreadAttr_t AHT20DataUpdateTask_attributes = {
-    .name = "AHT20DataUpdateTask",
-    .stack_size = 128 * 10,
-    .priority = (osPriority_t)osPriorityLow1,
-};
+// osThreadId_t AHT20DataUpdateTaskHandle = NULL;
+// const osThreadAttr_t AHT20DataUpdateTask_attributes = {
+//     .name = "AHT20DataUpdateTask",
+//     .stack_size = 128 * 10,
+//     .priority = (osPriority_t)osPriorityLow1,
+// };
 
 // HealthDataUpdateTask Init
 osThreadId_t HealthDataUpdateTaskHandle = NULL;
 const osThreadAttr_t HealthDataUpdateTask_attributes = {
     .name = "HealthDataUpdateTask",
-    .stack_size = 128 * 10,
+    .stack_size = 128 * 6,
     .priority = (osPriority_t)osPriorityLow1,
 };
 
@@ -112,7 +114,7 @@ const osThreadAttr_t HealthDataUpdateTask_attributes = {
 osThreadId_t StepsDataUpdateTaskHandle = NULL;
 const osThreadAttr_t StepsDataUpdateTask_attributes = {
     .name = "StepsDataUpdateTask",
-    .stack_size = 128 * 10,
+    .stack_size = 128 * 5,
     .priority = (osPriority_t)osPriorityLow1,
 };
 
@@ -120,7 +122,7 @@ const osThreadAttr_t StepsDataUpdateTask_attributes = {
 osThreadId_t StopEnterTaskHandle = NULL;
 const osThreadAttr_t StopEnterTask_attributes = {
     .name = "StopEnterTask",
-    .stack_size = 128 * 10,
+    .stack_size = 128 * 16,
     .priority = (osPriority_t)osPriorityLow1,
 };
 
@@ -128,7 +130,7 @@ const osThreadAttr_t StopEnterTask_attributes = {
 osThreadId_t PrintSensDataTaskHandle = NULL;
 const osThreadAttr_t PrintSensDataTask_attributes = {
     .name = "PrintSensDataTask",
-    .stack_size = 128 * 10,
+    .stack_size = 128 * 5,
     .priority = (osPriority_t)osPriorityLow1,
 };
 
@@ -136,7 +138,7 @@ const osThreadAttr_t PrintSensDataTask_attributes = {
 osThreadId_t IdleEnterTaskHandle = NULL;
 const osThreadAttr_t IdleEnterTask_attributes = {
     .name = "IdleEnterTask",
-    .stack_size = 128 * 10,
+    .stack_size = 128 * 1,
     .priority = (osPriority_t)osPriorityLow1,
 };
 
@@ -144,7 +146,7 @@ const osThreadAttr_t IdleEnterTask_attributes = {
 osThreadId_t EcompassDataUpdateTaskHandle = NULL;
 const osThreadAttr_t EcompassDataUpdateTask_attributes = {
     .name = "EcompassDataUpdateTask",
-    .stack_size = 128 * 10,
+    .stack_size = 128 * 5,
     .priority = (osPriority_t)osPriorityLow1,
 };
 
@@ -152,10 +154,25 @@ const osThreadAttr_t EcompassDataUpdateTask_attributes = {
 osThreadId_t GY39DataUpdateTaskHandle = NULL;
 const osThreadAttr_t GY39DataUpdateTask_attributes = {
     .name = "GY39DataUpdateTask",
-    .stack_size = 128 * 10,
+    .stack_size = 128 * 5,
     .priority = (osPriority_t)osPriorityLow1,
 };
 
+// KeyTask Init
+osThreadId_t KeyTaskHandle = NULL;
+const osThreadAttr_t KeyTask_attributes = {
+    .name = "KeyTask",
+    .stack_size = 128 * 1,
+    .priority = (osPriority_t)osPriorityLow1,
+};
+
+// ScrRenewTask Init
+osThreadId_t ScrRenewTaskHandle = NULL;
+const osThreadAttr_t ScrRenewTask_attributes = {
+    .name = "ScrRenewTask",
+    .stack_size = 128 * 5,
+    .priority = (osPriority_t)osPriorityLow1,
+};
 
 /* Message queues ------------------------------------------------------------*/
 
@@ -189,8 +206,10 @@ void user_Tasks_Init(void)
     StopEnterTaskHandle = osThreadNew(StopEnterTask, NULL, &StopEnterTask_attributes);
     IdleEnterTaskHandle = osThreadNew(IdleEnterTask, NULL, &IdleEnterTask_attributes);
     PrintSensDataTaskHandle = osThreadNew(user_PrintSensDataTask, NULL, &PrintSensDataTask_attributes);
-    EcompassDataUpdateTaskHandle = osThreadNew(EcompassDataUpdateTask, NULL, &EcompassDataUpdateTask_attributes);   
+    //EcompassDataUpdateTaskHandle = osThreadNew(EcompassDataUpdateTask, NULL, &EcompassDataUpdateTask_attributes);   
     GY39DataUpdateTaskHandle = osThreadNew(GY39DataUpdateTask, NULL, &GY39DataUpdateTask_attributes);
+    KeyTaskHandle = osThreadNew(KeyTask, NULL, &KeyTask_attributes);
+    ScrRenewTaskHandle = osThreadNew(ScrRenewTask, NULL, &ScrRenewTask_attributes);
 
     /* add events, ... */
 

@@ -940,6 +940,16 @@
               <FileType>1</FileType>
               <FilePath>..\User\Tasks\Src\user_SensUpdateTask.c</FilePath>
             </File>
+            <File>
+              <FileName>user_KeyTask.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\User\Tasks\Src\user_KeyTask.c</FilePath>
+            </File>
+            <File>
+              <FileName>user_ScrRenewTask.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\User\Tasks\Src\user_ScrRenewTask.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

@@ -3001,7 +3001,7 @@ u8 mpu_dmp_init(void)
          * INV_XYZ_ACCEL:
          * 只让加速度数据进入FIFO
          */
-        res = mpu_configure_fifo(INV_XYZ_ACCEL);
+        res = mpu_configure_fifo(INV_XYZ_GYRO | INV_XYZ_ACCEL);
 
         if(res)
             return 2;
@@ -3081,7 +3081,7 @@ u8 mpu_dmp_init(void)
          */
         res =
         dmp_enable_feature(
-            DMP_FEATURE_TAP |
+            DMP_FEATURE_6X_LP_QUAT |
             DMP_FEATURE_SEND_RAW_ACCEL |
             DMP_FEATURE_PEDOMETER
         );

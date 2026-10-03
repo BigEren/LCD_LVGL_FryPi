@@ -7,6 +7,8 @@
 #include "math.h"
 #include "my_delay.h"
 #include "stdbool.h"
+#include "inv_mpu.h"
+#include "inv_mpu_dmp_motion_driver.h"
 
 /*============================================================
  *                    MPU6050 寄存器定义
@@ -200,6 +202,13 @@
  * WHO_AM_I 寄存器正常情况下返回 0x70
  */
 #define MPU_ID                  0x70
+
+// 定义一个结构体保存角度（单位：度）
+typedef struct {
+    float roll;
+    float pitch;
+    float yaw;
+} MPU_Attitude_t;
 
 
 /*============================================================

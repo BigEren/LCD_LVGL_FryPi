@@ -537,11 +537,55 @@ void MPU_Get_Angles(float *roll, float *pitch)
     *pitch = -atanf (ax / sqrtf(ay * ay + az * az));    // 计算 pitch 角度
 }
 
+// 从 DMP 读取四元数并转为欧拉角（度）
+bool MPU_DMP_Get_Angles(MPU_Attitude_t *attitude)
+{
+    short gyro[3], accel[3], sensors;
+    unsigned char more;
+    long quat[4]; // 四元数 q0, q1, q2, q3 (q30 格式)
+    unsigned long timestamp;
+
+    // 从 DMP FIFO 中读取数据
+    if (dmp_read_fifo(gyro, accel, quat, &timestamp, &sensors, &more) != 0) {
+        return false;
+    }
+
+    // 确保四元数已更新
+    if (sensors & INV_WXYZ_QUAT) {
+        // 将 long 转换为 float（除以 2^30）
+        float q0 = quat[0] / 1073741824.0f;
+        float q1 = quat[1] / 1073741824.0f;
+        float q2 = quat[2] / 1073741824.0f;
+        float q3 = quat[3] / 1073741824.0f;
+
+        // 四元数转欧拉角（弧度）
+        float roll_rad  = atan2f(2.0f * (q0 * q1 + q2 * q3), 1.0f - 2.0f * (q1 * q1 + q2 * q2));
+        float pitch_rad = asinf(2.0f * (q0 * q2 - q3 * q1));
+        float yaw_rad   = atan2f(2.0f * (q0 * q3 + q1 * q2), 1.0f - 2.0f * (q2 * q2 + q3 * q3));
+
+        // 弧度转角度（度）
+        attitude->roll  = roll_rad * 57.29578f;
+        attitude->pitch = pitch_rad * 57.29578f;
+        attitude->yaw   = yaw_rad * 57.29578f;
+
+        return true;
+    }
+    return false;
+}
+
 bool MPU_isHorizontal(void)
 {
-    float roll, pitch;
-    MPU_Get_Angles(&roll, &pitch);
-    if (roll <= 0.50 && roll >= -0.50 && pitch <= 0.50 && pitch >= -0.50)
+    MPU_Attitude_t att;
+    
+    // 1. 获取 DMP 解算出的角度
+    if (!MPU_DMP_Get_Angles(&att)) {
+        // 读取失败时，为了安全，默认返回不平
+        return false; 
+    }
+
+    // 2. 判定（单位：度）
+    if (att.roll <= 2.0f && att.roll >= -2.0f && 
+        att.pitch <= 2.0f && att.pitch >= -2.0f) 
     {
         return true;
     }
